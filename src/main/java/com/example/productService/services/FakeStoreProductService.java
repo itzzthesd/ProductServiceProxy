@@ -37,12 +37,12 @@ public class FakeStoreProductService implements IProductService{
     public ResponseEntity<ProductDto> getSingleProduct(Long productId) {
        
         RestTemplate restTemplate = restTemplateBuilder.build();
-        ResponseEntity<ProductDto> product = restTemplate /// jackson is doing the mapping of response to ProductDto
+        ResponseEntity<ProductDto> productDto = restTemplate /// jackson is doing the mapping of response to ProductDto
                         .getForEntity("https://fakestoreapi.com/products/{productId}", ProductDto.class, productId);
 
         // we can convert product DTO to product and return product to controller as well 
         
-        return product;
+        return productDto;
     }
 
     @Override
@@ -54,15 +54,17 @@ public class FakeStoreProductService implements IProductService{
     }
 
     @Override
-    public Product updateProduct(Long productId, Product product) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateProduct'");
+    public Product updateProduct(Long productId, ProductDto productDto) {
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        restTemplate.put("https://fakestoreapi.com/products/{productId}", productDto, productId); // returns void 
+        Product product = getProduct(productDto);
+       return product;
     }
 
     @Override
-    public String deleteProduct(Long productId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteProduct'");
+    public void deleteProduct(Long productId) {
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        restTemplate.delete("https://fakestoreapi.com/products/{productId}", productId);
     }
 
      private Product getProduct(ProductDto productDto) {

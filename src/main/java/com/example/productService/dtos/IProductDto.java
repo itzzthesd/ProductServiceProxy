@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ProductDto { /// always expose our product Dto to clients, never expose 3rd party DTo to clients
+public abstract class IProductDto {
     private Long id;
     private String title;
     private double price;

@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,28 +50,12 @@ public class ProductController {
 
             return responseEntity;
         }catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            //throw e; 
+            //return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw e; 
         }
                 
         
     }
-
-    @PutMapping("/{id}")
-    public String putSingleProduct(@PathVariable("id") Long productId){
-        return "put" + productId;
-    }
-
-    @DeleteMapping("/{id}")
-    public String deleteSingleProduct(@PathVariable("id") Long productId){
-        return "delete" + productId;
-    }
-
-    @GetMapping("/{id}/abc")
-    public String getSingleProductbyStr(@PathVariable("id") String productId){
-        return "abc" + productId + "abc";
-    }
-
 
     @GetMapping("")
     public ResponseEntity<ProductDto[]> getAllProducts(){
@@ -82,10 +67,28 @@ public class ProductController {
         return allPRoduct;
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> putSingleProduct(@PathVariable("id") Long productId, @RequestBody ProductDto productDto){
+        Product product = productService.updateProduct(productId, productDto);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+
     @PostMapping
     public ResponseEntity<Product> addNewProduct(@RequestBody ProductDto productDto){
         Product product = productService.addNewProduct(productDto);
         return new ResponseEntity<>(product, HttpStatus.OK);
 
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteSingleProduct(@PathVariable("id") Long productId){
+        productService.deleteProduct(productId);
+        return new ResponseEntity<>(HttpStatus.GONE);
+    }
+
+    // @ExceptionHandler({NullPointerException.class, IllegalArgumentException.class})
+    // public ResponseEntity<String> handleException(Exception e){
+    //     return new ResponseEntity<>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+    // }
 }
