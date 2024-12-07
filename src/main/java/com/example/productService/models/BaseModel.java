@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.springframework.stereotype.Indexed;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,6 +21,7 @@ public abstract class BaseModel {
     private Long id;
     private Date createdAt;
     private Date lastUpdatedAt;
-    private boolean isDeleted;
+    @Column(columnDefinition = "boolean default false")
+    private boolean isDeleted = false;
     
 }

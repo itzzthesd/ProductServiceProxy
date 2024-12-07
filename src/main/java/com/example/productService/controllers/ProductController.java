@@ -4,11 +4,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.productService.dtos.ProductDto;
+import com.example.productService.models.Categories;
 import com.example.productService.models.Product;
 import com.example.productService.services.IProductService;
 import com.example.productService.services.SelfProductService;
 
 import java.util.List;
+import java.util.Locale.Category;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -76,7 +78,8 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Product> addNewProduct(@RequestBody ProductDto productDto){
-        Product product = productService.addNewProduct(productDto);
+        Product tmpProd = DtoToProduct(productDto);
+        Product product = productService.addNewProduct(tmpProd);
         return new ResponseEntity<>(product, HttpStatus.OK);
 
     }
@@ -91,4 +94,18 @@ public class ProductController {
     // public ResponseEntity<String> handleException(Exception e){
     //     return new ResponseEntity<>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
     // }
+
+    private Product DtoToProduct(ProductDto productDto){
+        Product product = new Product();
+        product.setTitle(productDto.getTitle());
+        product.setPrice(productDto.getPrice());
+        product.setImageUrl(productDto.getImage());
+        product.setDescription(productDto.getDescription());
+        Categories categories = new Categories();
+        categories.setDescription(null);
+        product.setCategory(categories);
+        System.out.println(product);
+        System.out.println(categories);
+        return product;
+    }
 }

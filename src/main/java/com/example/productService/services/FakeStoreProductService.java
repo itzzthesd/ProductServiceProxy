@@ -13,15 +13,15 @@ import com.example.productService.dtos.ProductDto;
 import com.example.productService.models.Categories;
 import com.example.productService.models.Product;
 
-@Service
-public class FakeStoreProductService implements IProductService{
+//@Service
+public class FakeStoreProductService { //implements IProductService
 
     private RestTemplateBuilder restTemplateBuilder;
 
     public FakeStoreProductService(RestTemplateBuilder restTemplateBuilder){
         this.restTemplateBuilder = restTemplateBuilder;
     }
-    @Override
+    //@Override
     public ResponseEntity<ProductDto[]> getAllProducts() {
          MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         headers.add("Accept", "application/json");
@@ -33,7 +33,7 @@ public class FakeStoreProductService implements IProductService{
         return productDto;
        }
 
-    @Override
+    //@Override
     public ResponseEntity<ProductDto> getSingleProduct(Long productId) {
        
         RestTemplate restTemplate = restTemplateBuilder.build();
@@ -45,7 +45,7 @@ public class FakeStoreProductService implements IProductService{
         return productDto;
     }
 
-    @Override
+    //@Override
     public Product addNewProduct(ProductDto productdto) {
         RestTemplate restTemplate = restTemplateBuilder.build();
         restTemplate.postForEntity("https://fakestoreapi.com/products", productdto, ProductDto.class);
@@ -53,7 +53,7 @@ public class FakeStoreProductService implements IProductService{
         return product;
     }
 
-    @Override
+    //@Override
     public Product updateProduct(Long productId, ProductDto productDto) {
         RestTemplate restTemplate = restTemplateBuilder.build();
         restTemplate.put("https://fakestoreapi.com/products/{productId}", productDto, productId); // returns void 
@@ -61,7 +61,7 @@ public class FakeStoreProductService implements IProductService{
        return product;
     }
 
-    @Override
+    //@Override
     public void deleteProduct(Long productId) {
         RestTemplate restTemplate = restTemplateBuilder.build();
         restTemplate.delete("https://fakestoreapi.com/products/{productId}", productId);

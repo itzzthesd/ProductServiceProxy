@@ -12,7 +12,7 @@ public interface IProductService {
 
      ResponseEntity<ProductDto> getSingleProduct(Long productId);
 
-     Product addNewProduct(ProductDto productDto);
+     Product addNewProduct(Product product);
 
     Product updateProduct(Long productId, ProductDto productdto);
 
