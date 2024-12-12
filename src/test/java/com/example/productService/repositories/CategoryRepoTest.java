@@ -1,5 +1,7 @@
 package com.example.productService.repositories;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -58,5 +60,12 @@ public class CategoryRepoTest {
         System.out.println("Debug");
         System.out.println("Debug");
         System.out.println("Debug");
+    }
+
+    @Test
+    void testFindByabc() {
+        String x = categoryRepo.findByIdCustomQuery(2L);
+        System.out.println(x);
+        assertNotNull(x);
     }
 }
