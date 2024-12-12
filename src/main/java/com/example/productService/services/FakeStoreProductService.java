@@ -13,7 +13,7 @@ import com.example.productService.dtos.ProductDto;
 import com.example.productService.models.Categories;
 import com.example.productService.models.Product;
 
-//@Service
+@Service
 public class FakeStoreProductService { //implements IProductService
 
     private RestTemplateBuilder restTemplateBuilder;

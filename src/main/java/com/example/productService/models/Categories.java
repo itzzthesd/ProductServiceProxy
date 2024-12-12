@@ -2,8 +2,11 @@ package com.example.productService.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 // import jakarta.persistence.Entity;
 // import jakarta.persistence.OneToMany;
@@ -19,7 +22,8 @@ public class Categories extends BaseModel{
     private String name;
     private String description;
     
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Product> productList;
     
 }
