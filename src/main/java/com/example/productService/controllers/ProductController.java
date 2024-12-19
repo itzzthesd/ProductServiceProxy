@@ -48,39 +48,9 @@ public class ProductController {
     }
 
    
-    // @GetMapping("/{id}")
-    // public ResponseEntity<ProductDto> getSingleProduct(@PathVariable("id") Long productId){
-    //     try{
-    //         if(productId>10){
-    //             throw new IllegalArgumentException("productId should be less than 10");
-    //         }
-    //         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-    //         headers.add("Accept", "application/json");
-    //         headers.add("auth-token", "heyaccess");
-    //         ProductDto productDto = productService.getSingleProduct(productId).getBody();
-    //         ResponseEntity<ProductDto> responseEntity = new ResponseEntity<>(productDto, headers, HttpStatus.OK);
-
-    //         return responseEntity;
-    //     }catch(Exception e){
-    //         //return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    //         throw e; 
-    //     }
-                
-        
-    // }
-
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDto> getSingleProduct(@Nullable @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
-                            @PathVariable("id") Long productId){
+    public ResponseEntity<ProductDto> getSingleProduct(@PathVariable("id") Long productId){
         try{
-            JwtObject authTokenObj = null;
-            if(authToken != null){
-                Optional<JwtObject> authObjectOptional = tokenValidator.validateToken(authToken);
-                if(authObjectOptional.isEmpty()){
-                    // throw an exception
-                }
-                authTokenObj = authObjectOptional.get();
-            }
             if(productId>10){
                 throw new IllegalArgumentException("productId should be less than 10");
             }
@@ -88,9 +58,6 @@ public class ProductController {
             headers.add("Accept", "application/json");
             headers.add("auth-token", "heyaccess");
             ProductDto productDto = productService.getSingleProduct(productId).getBody();
-            // with auth
-            //ProductDto productDtoAuth = productService.getSingleProductAuth(productId, authTokenObj).getBody();
-            
             ResponseEntity<ProductDto> responseEntity = new ResponseEntity<>(productDto, headers, HttpStatus.OK);
 
             return responseEntity;
@@ -101,6 +68,39 @@ public class ProductController {
                 
         
     }
+
+    // @GetMapping("/{id}")
+    // public ResponseEntity<ProductDto> getSingleProduct(@Nullable @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
+    //                         @PathVariable("id") Long productId){
+    //     try{
+    //         JwtObject authTokenObj = null;
+    //         if(authToken != null){
+    //             Optional<JwtObject> authObjectOptional = tokenValidator.validateToken(authToken);
+    //             if(authObjectOptional.isEmpty()){
+    //                 // throw an exception
+    //             }
+    //             authTokenObj = authObjectOptional.get();
+    //         }
+    //         if(productId>10){
+    //             throw new IllegalArgumentException("productId should be less than 10");
+    //         }
+    //         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+    //         headers.add("Accept", "application/json");
+    //         headers.add("auth-token", "heyaccess");
+    //         ProductDto productDto = productService.getSingleProduct(productId).getBody();
+    //         // with auth
+    //         //ProductDto productDtoAuth = productService.getSingleProductAuth(productId, authTokenObj).getBody();
+            
+    //         ResponseEntity<ProductDto> responseEntity = new ResponseEntity<>(productDto, headers, HttpStatus.OK);
+
+    //         return responseEntity;
+    //     }catch(Exception e){
+    //         //return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //         throw e; 
+    //     }
+                
+        
+    // }
 
     @GetMapping("")
     public ResponseEntity<ProductDto[]> getAllProducts(){
