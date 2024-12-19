@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.productService.dtos.ProductDto;
 import com.example.productService.models.Product;
 import com.example.productService.repositories.ProductRepo;
+import com.example.productService.security.JwtObject;
 
 @Service
 public class SelfProductService implements IProductService{
@@ -47,6 +48,13 @@ public class SelfProductService implements IProductService{
    public void deleteProduct(Long productId) {
       // TODO Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'deleteProduct'");
+   }
+
+
+   @Override
+   public ResponseEntity<ProductDto> getSingleProductAuth(Long productId, JwtObject jwtObject) {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'getSingleProductAuth'");
    }
 
     

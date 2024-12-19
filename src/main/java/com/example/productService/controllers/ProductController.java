@@ -6,12 +6,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.productService.dtos.ProductDto;
 import com.example.productService.models.Categories;
 import com.example.productService.models.Product;
+import com.example.productService.security.JwtObject;
+import com.example.productService.security.TokenValidator;
 import com.example.productService.services.IProductService;
 import com.example.productService.services.SelfProductService;
 
+import jakarta.annotation.Nullable;
+
 import java.util.List;
+import java.util.Optional;
 import java.util.Locale.Category;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +30,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -33,14 +40,47 @@ public class ProductController {
     
     IProductService productService;
 
-    public ProductController(IProductService productService){
+    private TokenValidator tokenValidator;
+
+    public ProductController(IProductService productService, TokenValidator tokenValidator){
         this.productService = productService;
+        this.tokenValidator = tokenValidator;
     }
 
    
+    // @GetMapping("/{id}")
+    // public ResponseEntity<ProductDto> getSingleProduct(@PathVariable("id") Long productId){
+    //     try{
+    //         if(productId>10){
+    //             throw new IllegalArgumentException("productId should be less than 10");
+    //         }
+    //         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+    //         headers.add("Accept", "application/json");
+    //         headers.add("auth-token", "heyaccess");
+    //         ProductDto productDto = productService.getSingleProduct(productId).getBody();
+    //         ResponseEntity<ProductDto> responseEntity = new ResponseEntity<>(productDto, headers, HttpStatus.OK);
+
+    //         return responseEntity;
+    //     }catch(Exception e){
+    //         //return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //         throw e; 
+    //     }
+                
+        
+    // }
+
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDto> getSingleProduct(@PathVariable("id") Long productId){
+    public ResponseEntity<ProductDto> getSingleProduct(@Nullable @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
+                            @PathVariable("id") Long productId){
         try{
+            JwtObject authTokenObj = null;
+            if(authToken != null){
+                Optional<JwtObject> authObjectOptional = tokenValidator.validateToken(authToken);
+                if(authObjectOptional.isEmpty()){
+                    // throw an exception
+                }
+                authTokenObj = authObjectOptional.get();
+            }
             if(productId>10){
                 throw new IllegalArgumentException("productId should be less than 10");
             }
@@ -48,6 +88,9 @@ public class ProductController {
             headers.add("Accept", "application/json");
             headers.add("auth-token", "heyaccess");
             ProductDto productDto = productService.getSingleProduct(productId).getBody();
+            // with auth
+            //ProductDto productDtoAuth = productService.getSingleProductAuth(productId, authTokenObj).getBody();
+            
             ResponseEntity<ProductDto> responseEntity = new ResponseEntity<>(productDto, headers, HttpStatus.OK);
 
             return responseEntity;
