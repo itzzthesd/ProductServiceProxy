@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class TokenValidator {
+public class TokenValidator { // if you dont want to use the spring securoty and Oauth then we can 
+    // write our own logic to implement the authentication and authorisation
 
     @Autowired
     private RestTemplateBuilder restTemplateBuilder;

@@ -1,6 +1,7 @@
 package com.example.productService.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,15 +22,14 @@ public class SelfProductService implements IProductService{
 
 
    @Override
-   public ResponseEntity<ProductDto[]> getAllProducts() {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'getAllProducts'");
+   public List<Product> getAllProducts() {
+     return productRepo.findAll();
    }
 
    @Override
-   public ResponseEntity<ProductDto> getSingleProduct(Long productId) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'getSingleProduct'");
+   public Optional<Product> getSingleProduct(Long productId) {
+      return productRepo.findById(productId);
+      
    }
 
    @Override

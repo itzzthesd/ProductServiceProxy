@@ -42,15 +42,6 @@ public class CategoryRepoTest {
         System.out.println("Debug");
     }
 
-    @Test
-    @Transactional
-    void getProducctTest(){
-        Optional<Product> product = productRepo.findById(155L);
-        //Product p = product.get();
-        System.out.println("debug");
-        //return p;
-
-    }
 
     @Test
     @Transactional

@@ -51,13 +51,16 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ProductDto> getSingleProduct(@PathVariable("id") Long productId){
         try{
-            if(productId>10){
-                throw new IllegalArgumentException("productId should be less than 10");
+            if(productId<0){
+                throw new IllegalArgumentException("productId should be greater than 0");
             }
             MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
             headers.add("Accept", "application/json");
             headers.add("auth-token", "heyaccess");
-            ProductDto productDto = productService.getSingleProduct(productId).getBody();
+            Optional<Product> productOptional = productService.getSingleProduct(productId);
+            Product product = productOptional.get();
+            ProductDto productDto = ProductToDto(product);
+            
             ResponseEntity<ProductDto> responseEntity = new ResponseEntity<>(productDto, headers, HttpStatus.OK);
 
             return responseEntity;
@@ -103,13 +106,20 @@ public class ProductController {
     // }
 
     @GetMapping("")
-    public ResponseEntity<ProductDto[]> getAllProducts(){
+    public ProductDto[] getAllProducts(){
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.add("Accept", "application/json");
-        headers.add("auth-token", "heyaccess");
-        ResponseEntity<ProductDto[]> allPRoduct = productService.getAllProducts();
-        //ResponseEntity<ProductDto[]> response = new ResponseEntity<ProductDto[]>(allPRoduct, headers);
-        return allPRoduct;
+        //headers.add("Accept", "application/json");
+        //headers.add("auth-token", "heyaccess");
+        List<Product> allPRoduct = productService.getAllProducts();
+        ProductDto[] listOfProductDtos = new ProductDto[allPRoduct.size()];
+        int i =0;
+        for(Product product: allPRoduct){
+            ProductDto productDto = ProductToDto(product);
+            listOfProductDtos[i] = productDto;
+
+        }
+        //ResponseEntity<ProductDto[]> response = new ResponseEntity<ProductDto[]>(listOfProductDtos);
+        return listOfProductDtos;
     }
 
     @PutMapping("/{id}")
@@ -150,5 +160,17 @@ public class ProductController {
         System.out.println(product);
         System.out.println(categories);
         return product;
+    }
+
+    private ProductDto ProductToDto(Product product){
+        ProductDto productDto = new ProductDto();
+        productDto.setTitle(product.getTitle());
+        productDto.setPrice(product.getPrice());
+        //productDto.setImageUrl(product.getImage());
+        productDto.setDescription(product.getDescription());
+        Categories categories = new Categories();
+        categories.setDescription(null);
+        productDto.setCategory(categories.getName());
+        return productDto;
     }
 }
