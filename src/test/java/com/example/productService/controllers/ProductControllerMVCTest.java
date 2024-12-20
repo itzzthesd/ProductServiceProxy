@@ -3,6 +3,7 @@ package com.example.productService.controllers;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
@@ -53,8 +54,15 @@ public class ProductControllerMVCTest {
        products1[1] = new ProductDto();
        ResponseEntity<ProductDto[]> rs1 = ResponseEntity.ok(products1);
 
+       //create list of product
+       List<Product> lisProduct = new ArrayList<>();
+       lisProduct.add ( new Product());
+       lisProduct.add ( new Product());
+       lisProduct.add ( new Product());
+
+
        // whenever service is called it will return the "rs" : first data set
-       when(productService.getAllProducts()).thenReturn(rs);
+       when(productService.getAllProducts()).thenReturn(lisProduct);
 
        // and calling the API and checking it with "rs"
        mockMvc.perform(get("/products"))

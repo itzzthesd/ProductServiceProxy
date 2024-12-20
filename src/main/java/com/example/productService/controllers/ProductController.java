@@ -60,8 +60,11 @@ public class ProductController {
             Optional<Product> productOptional = productService.getSingleProduct(productId);
             Product product = productOptional.get();
             ProductDto productDto = ProductToDto(product);
-            
+            // return response entity
             ResponseEntity<ProductDto> responseEntity = new ResponseEntity<>(productDto, headers, HttpStatus.OK);
+
+            //return product 
+            //ResponseEntity<Product> responseEntity = new ResponseEntity<>(product, headers, HttpStatus.OK);
 
             return responseEntity;
         }catch(Exception e){
@@ -106,7 +109,7 @@ public class ProductController {
     // }
 
     @GetMapping("")
-    public ProductDto[] getAllProducts(){
+    public ResponseEntity<ProductDto[]> getAllProducts(){
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         //headers.add("Accept", "application/json");
         //headers.add("auth-token", "heyaccess");
@@ -116,10 +119,11 @@ public class ProductController {
         for(Product product: allPRoduct){
             ProductDto productDto = ProductToDto(product);
             listOfProductDtos[i] = productDto;
-
+            i++;
         }
         //ResponseEntity<ProductDto[]> response = new ResponseEntity<ProductDto[]>(listOfProductDtos);
-        return listOfProductDtos;
+        ResponseEntity<ProductDto[]> response = new ResponseEntity<ProductDto[]>(listOfProductDtos, HttpStatus.OK);
+        return response;
     }
 
     @PutMapping("/{id}")
@@ -164,13 +168,15 @@ public class ProductController {
 
     private ProductDto ProductToDto(Product product){
         ProductDto productDto = new ProductDto();
+        productDto.setId(product.getId());
         productDto.setTitle(product.getTitle());
         productDto.setPrice(product.getPrice());
+        productDto.setCreatedAt(product.getCreatedAt());
         //productDto.setImageUrl(product.getImage());
         productDto.setDescription(product.getDescription());
         Categories categories = new Categories();
         categories.setDescription(null);
-        productDto.setCategory(categories.getName());
+        productDto.setCategory(product.getCategory().getName());
         return productDto;
     }
 }

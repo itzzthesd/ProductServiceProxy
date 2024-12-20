@@ -24,7 +24,8 @@ public class Product extends BaseModel{
     private String imageUrl;
     private Boolean isPublic;
     private int numberOfUnits;
-    @ManyToOne(cascade = CascadeType.ALL)
+    //@ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne //(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JsonIgnore
     private Categories category;
 }

@@ -1,5 +1,9 @@
 package com.example.productService.dtos;
 
+import java.util.Date;
+
+import com.example.productService.models.Categories;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,4 +19,5 @@ public class ProductDto { /// always expose our product Dto to clients, never ex
     private String image;
     private String category;
     private RatingDto rating;
+    private Date createdAt;
 }
