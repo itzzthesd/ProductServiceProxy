@@ -36,8 +36,8 @@ public class CategoryRepoTest {
         // productRepo.save(product);
 
         Categories categories = new Categories();
-        categories.setName("clothes");
-        categories.setDescription("clothing section.");
+        categories.setName("car");
+        categories.setDescription("car section.");
         categories.setProductList(null);
         categories.setCreatedAt(new Date());
         categories = categoryRepo.save(categories);
@@ -70,6 +70,15 @@ public class CategoryRepoTest {
         String x = categoryRepo.findByIdCustomQuery(2L);
         System.out.println(x);
         assertNotNull(x);
+    }
+
+    @Test
+    @Transactional
+    void testGetCategoryByName(){
+        Categories cat = categoryRepo.findByName("car");
+        String description = cat.getDescription();
+        Long id = cat.getId();
+
     }
 
     

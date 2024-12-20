@@ -37,14 +37,17 @@ public class ProductRepoTest {
     void testAddNewProduct(){
         Product product = new Product();
         //product.setId(303L);
-        product.setTitle("one plus");
-        product.setDescription("extra ordinary phone");
+        product.setTitle("lambo");
+        product.setDescription("fastest car.");
         product.setCreatedAt(new Date());
         product.setIsPublic(true);
-        Categories categorie = categoryRepo.findCategoriesById(1L);
-        String x = categorie.getDescription();
-        product.setCategory(categorie);
-        productRepo.save(product);
+        productRepo.save(product); // first save the product
+        //Categories categorie = categoryRepo.findCategoriesById(1L);
+        Categories categorie2 = categoryRepo.findByName("car");
+        String x = categorie2.getDescription();
+        product.setCategory(categorie2);
+        productRepo.save(product); // then set the category as well 
+        
     }
 
     @Test

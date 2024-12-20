@@ -13,10 +13,13 @@ import com.example.productService.services.SelfProductService;
 
 import jakarta.annotation.Nullable;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Locale.Category;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -40,6 +43,9 @@ public class ProductController {
     
     IProductService productService;
 
+    @Autowired
+    private CategoryController categoryController;
+
     private TokenValidator tokenValidator;
 
     public ProductController(IProductService productService, TokenValidator tokenValidator){
@@ -49,7 +55,7 @@ public class ProductController {
 
    
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDto> getSingleProduct(@PathVariable("id") Long productId){
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long productId){
         try{
             if(productId<0){
                 throw new IllegalArgumentException("productId should be greater than 0");
@@ -61,10 +67,10 @@ public class ProductController {
             Product product = productOptional.get();
             ProductDto productDto = ProductToDto(product);
             // return response entity
-            ResponseEntity<ProductDto> responseEntity = new ResponseEntity<>(productDto, headers, HttpStatus.OK);
+            //ResponseEntity<ProductDto> responseEntity = new ResponseEntity<>(productDto, headers, HttpStatus.OK);
 
             //return product 
-            //ResponseEntity<Product> responseEntity = new ResponseEntity<>(product, headers, HttpStatus.OK);
+            ResponseEntity<Product> responseEntity = new ResponseEntity<>(product, headers, HttpStatus.OK);
 
             return responseEntity;
         }catch(Exception e){
@@ -158,11 +164,13 @@ public class ProductController {
         product.setPrice(productDto.getPrice());
         product.setImageUrl(productDto.getImage());
         product.setDescription(productDto.getDescription());
-        Categories categories = new Categories();
-        categories.setDescription(null);
-        product.setCategory(categories);
-        System.out.println(product);
-        System.out.println(categories);
+        product.setCreatedAt(new Date());
+        //Categories categories = new Categories();
+        
+        Categories categories2 = categoryController.getSingleCategoryByName(productDto.getCategory()).getBody();
+        product.setCategory(categories2);
+        //categories.setDescription(null);
+        //product.setCategory(categories);
         return product;
     }
 
@@ -175,7 +183,12 @@ public class ProductController {
         //productDto.setImageUrl(product.getImage());
         productDto.setDescription(product.getDescription());
         Categories categories = new Categories();
-        categories.setDescription(null);
+        if(product.getCategory()==null){
+            productDto.setCategory(null);
+            return productDto;
+        }
+        categories.setDescription(product.getCategory().getDescription());
+        categories.setName(product.getCategory().getName());
         productDto.setCategory(product.getCategory().getName());
         return productDto;
     }

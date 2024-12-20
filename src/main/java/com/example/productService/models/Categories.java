@@ -22,8 +22,8 @@ public class Categories extends BaseModel{
     private String name;
     private String description;
     
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    @JsonIgnore
+    @OneToMany(mappedBy = "category")
+    //@JsonIgnore
     private List<Product> productList;
 
     @Override

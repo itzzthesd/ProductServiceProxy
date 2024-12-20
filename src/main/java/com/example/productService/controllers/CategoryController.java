@@ -32,6 +32,15 @@ public class CategoryController {
         return res;
     }
 
+    @GetMapping("/{name}")
+    public ResponseEntity<Categories> getSingleCategoryByName(@PathVariable("name") String name){
+        Categories tmpCat = categoryService.getCategoryByName(name);
+        ResponseEntity<Categories> res = new ResponseEntity<>(tmpCat, HttpStatus.OK);
+        return res;
+    }
+
+
+
     @GetMapping("")
     public ResponseEntity<List<Categories>> getCategory(){
        List<Categories> listOfCat = categoryService.getAllCategories();
