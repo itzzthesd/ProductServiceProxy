@@ -15,7 +15,7 @@ public class FakeStoreProductServiceTest {
     @Autowired
     private FakeStoreProductService fk;
 
-    @Test
+   // @Test
     void testGetAllProducts() { // this is dependent on the 3rd party API and also our FakeStoreProductService
         // hence it is not unit test , not even integration test
         ResponseEntity<ProductDto[]> res = fk.getAllProducts();

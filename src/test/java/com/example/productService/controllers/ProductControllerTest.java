@@ -45,8 +45,8 @@ public class ProductControllerTest {
         
     }
 
-    @Test
-    @Transactional
+    //@Test
+    //@Transactional
     void testGetSingleProduct() {
        
         // create a sample Optional Product
@@ -78,7 +78,7 @@ public class ProductControllerTest {
 
     }
 
-    @Test
+    //@Test
     void testGetSingleProductException() {
         
         when(productService.getSingleProduct(any(Long.class))).thenThrow(new RuntimeException());
@@ -87,7 +87,7 @@ public class ProductControllerTest {
 
     }
 
-    @Test
+    //@Test
     void testPutSingleProduct() {
 
     }

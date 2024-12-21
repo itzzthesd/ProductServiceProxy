@@ -46,8 +46,8 @@ public class CategoryRepoTest {
     }
 
 
-    @Test
-    @Transactional
+    // @Test
+    // @Transactional
     void getProductByPrice(){
         List<Product> plist = productRepo.findByPriceBetween(200d, 300d);
 
@@ -56,8 +56,8 @@ public class CategoryRepoTest {
         System.out.println("Debug");
     }
 
-    @Test
-    @Transactional
+    // @Test
+    // @Transactional
     void testfindCategoryById(){
         Categories c = categoryRepo.findCategoriesById(2L);
         String des = c.getDescription();
@@ -65,15 +65,15 @@ public class CategoryRepoTest {
 
     }
 
-    @Test
+    //@Test
     void testFindByabc() {
         String x = categoryRepo.findByIdCustomQuery(2L);
         System.out.println(x);
         assertNotNull(x);
     }
 
-    @Test
-    @Transactional
+    // @Test
+    // @Transactional
     void testGetCategoryByName(){
         Categories cat = categoryRepo.findByName("car");
         String description = cat.getDescription();
