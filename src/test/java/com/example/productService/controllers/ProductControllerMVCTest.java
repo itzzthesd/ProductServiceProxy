@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.example.productService.dtos.ProductDto;
 import com.example.productService.models.Categories;
 import com.example.productService.models.Product;
+import com.example.productService.security.TokenValidator;
 import com.example.productService.services.IProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,7 +39,10 @@ public class ProductControllerMVCTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    //@Test
+    @Autowired
+    private TokenValidator tokenValidator;
+
+    @Test
     void testGetAllProducts() throws JsonProcessingException, Exception{
 
         // first set of products dto
@@ -71,7 +75,7 @@ public class ProductControllerMVCTest {
    
     }
 
-      // @Test
+     @Test
    void createProduct() throws Exception {
        Product productToCreate = new Product();
        productToCreate.setTitle("iPhone 15 Pro Max");
