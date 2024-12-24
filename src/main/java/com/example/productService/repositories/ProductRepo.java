@@ -1,7 +1,7 @@
 package com.example.productService.repositories;
 
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,8 +19,8 @@ public interface ProductRepo extends JpaRepository<Product, Long>{
 
     List<Product> findByPriceBetween(Double greaterThan, Double lessThan);
 
-    //List<Product> findByTitleEquals(String title, Pageable pageable);
+    List<Product> findByTitleEquals(String title, Pageable pageable);
 
-    List<Product> findByTitleEquals(String query, PageRequest of);
+    //List<Product> findByTitleEquals(String query, PageRequest of);
     
 } 
