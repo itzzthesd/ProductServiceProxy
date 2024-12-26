@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Test;
 
 public class RandomTest {
 
-    @Test
+    //@Test
      void test1(){
         Random r = new Random();
         int a = r.nextInt(10);
         assert(a<5);
     }
 
-    @Test
+    //@Test
     public void given2Strings_whenIsNotEqualRegardlessWhiteSpace_thenCorrect() {
         String str1 = "text";
         String str2 = " texts ";

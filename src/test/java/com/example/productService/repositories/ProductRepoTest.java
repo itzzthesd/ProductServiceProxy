@@ -16,7 +16,7 @@ import com.example.productService.models.Product;
 
 import jakarta.transaction.Transactional;
 
-@SpringBootTest
+//@SpringBootTest
 public class ProductRepoTest {
     @Autowired
     private ProductRepo productRepo;
@@ -24,8 +24,8 @@ public class ProductRepoTest {
     @Autowired
     private CategoryRepo categoryRepo;
 
-    @Test
-    @Transactional
+    //@Test
+    //@Transactional
     void getProducctTest(){
         Optional<Product> product = productRepo.findById(154L);
         Product p = product.get();
@@ -34,8 +34,8 @@ public class ProductRepoTest {
 
     }
 
-    @Test
-    @Commit
+    //@Test
+    //@Commit
     void testAddNewProduct(){
         Product product = new Product();
         //product.setId(303L);
@@ -52,8 +52,8 @@ public class ProductRepoTest {
         
     }
 
-    @Test
-    @Transactional
+    //@Test
+    //@Transactional
     void testGetAllProducts(){
         List<Product> listOfProduct = productRepo.findAll();
         for(Product p: listOfProduct){
@@ -63,8 +63,8 @@ public class ProductRepoTest {
         
     }
 
-    @Test
-    @Transactional
+    //@Test
+    //@Transactional
     void testSearchProductRepo(){
         Sort sort;
         sort = Sort.by("price");

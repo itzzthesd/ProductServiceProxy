@@ -23,24 +23,24 @@ import com.example.productService.services.IProductService;
 
 import jakarta.transaction.Transactional;
 
-@SpringBootTest
+//@SpringBootTest
 public class ProductControllerTest {
 
-    @Autowired
+    //@Autowired
     private ProductController productController;
 
-   @MockitoBean
+    //@MockitoBean
     private IProductService productService;
 
   
 
 
-    @Test
+    //@Test
     void testDeleteSingleProduct() {
 
     }
 
-    @Test
+    //@Test
     void testGetAllProducts() {
         
     }

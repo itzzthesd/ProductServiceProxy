@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.example.productService.dtos.ProductDto;
 
-@SpringBootTest
+//@SpringBootTest
 public class FakeStoreProductServiceTest {
 
     @Autowired

@@ -3,6 +3,8 @@ package com.example.productService.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.productService.clients.notificationService.OrderServiceClient;
+import com.example.productService.clients.notificationService.ProductRequestDto;
 import com.example.productService.dtos.ProductDto;
 import com.example.productService.models.Categories;
 import com.example.productService.models.Product;
@@ -48,9 +50,13 @@ public class ProductController {
 
     private TokenValidator tokenValidator;
 
-    public ProductController(IProductService productService, TokenValidator tokenValidator){
+    private final OrderServiceClient notificationServiceClient;
+
+    public ProductController(IProductService productService, TokenValidator tokenValidator, 
+                            OrderServiceClient notificationServiceClient){
         this.productService = productService;
         this.tokenValidator = tokenValidator;
+        this.notificationServiceClient = notificationServiceClient;
     }
 
    
@@ -60,17 +66,27 @@ public class ProductController {
             if(productId<0){
                 throw new IllegalArgumentException("productId should be greater than 0");
             }
-            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-            headers.add("Accept", "application/json");
-            headers.add("auth-token", "heyaccess");
+            
             Optional<Product> productOptional = productService.getSingleProduct(productId);
             Product product = productOptional.get();
             ProductDto productDto = ProductToDto(product);
             // return response entity
             //ResponseEntity<ProductDto> responseEntity = new ResponseEntity<>(productDto, headers, HttpStatus.OK);
 
-            //return product 
-            ResponseEntity<Product> responseEntity = new ResponseEntity<>(product, headers, HttpStatus.OK);
+           
+
+            // call the info to notification service.. that one of the product has been called
+            ProductRequestDto pDto = new ProductRequestDto();
+            pDto.setName(product.getTitle());
+            pDto.setPrice(product.getPrice());
+            ResponseEntity<ProductRequestDto> notificationResponse = notificationServiceClient.getProduct(pDto);
+
+             //return product 
+             MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+             headers.add("Accept", "application/json");
+             headers.add("auth-token", "heyaccess");
+             headers.add("notification-service-response", notificationResponse.getBody().toString());
+             ResponseEntity<Product> responseEntity = new ResponseEntity<>(product, headers, HttpStatus.OK);
 
             return responseEntity;
         }catch(Exception e){
@@ -127,8 +143,19 @@ public class ProductController {
             listOfProductDtos[i] = productDto;
             i++;
         }
-        //ResponseEntity<ProductDto[]> response = new ResponseEntity<ProductDto[]>(listOfProductDtos);
-        ResponseEntity<ProductDto[]> response = new ResponseEntity<ProductDto[]>(listOfProductDtos, HttpStatus.OK);
+        
+        // calling the order service 
+        ProductRequestDto pDto = new ProductRequestDto();
+            pDto.setName("all product");
+            pDto.setPrice(100.00);
+        ResponseEntity<ProductRequestDto> notificationResponse = notificationServiceClient.getProduct(pDto);
+
+        MultiValueMap<String, String> headers2 = new LinkedMultiValueMap<>();
+        headers2.add("Accept", "application/json");
+        headers2.add("auth-token", "heyaccess");
+        headers2.add("notification-service-response", notificationResponse.getHeaders().toString());
+        
+        ResponseEntity<ProductDto[]> response = new ResponseEntity<ProductDto[]>(listOfProductDtos, headers2, HttpStatus.OK);
         return response;
     }
 

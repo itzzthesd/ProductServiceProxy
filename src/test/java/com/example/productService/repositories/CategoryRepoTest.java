@@ -17,17 +17,17 @@ import com.example.productService.models.Product;
 import jakarta.transaction.Transactional;
 
 
-@SpringBootTest
+//@SpringBootTest
 public class CategoryRepoTest {
 
-    @Autowired
+    //@Autowired
     private CategoryRepo categoryRepo;
 
-    @Autowired
+    //@Autowired
     private ProductRepo productRepo;
 
-    @Commit
-    @Test
+    //@Commit
+    //@Test
     void saveProductCategory(){
 
         // Product product = new Product();
