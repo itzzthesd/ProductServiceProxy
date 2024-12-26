@@ -10,14 +10,18 @@ import com.example.productService.models.Product;
 import com.example.productService.security.JwtObject;
 
 public interface IProductService {
-    List<Product> getAllProducts();
+    //List<Product> getAllProducts();
 
-     Optional<Product> getSingleProduct(Long productId);
+    ResponseEntity<ProductDto[]> getAllProducts();
+
+    Optional<Product> getSingleProduct(Long productId);
+
 
      ResponseEntity<ProductDto> getSingleProductAuth(Long productId, JwtObject jwtObject);
 
 
-     Product addNewProduct(Product product);
+     // Product addNewProduct(Product product);
+     Product addNewProduct(ProductDto productDto);
 
     Product updateProduct(Long productId, ProductDto productdto);
 

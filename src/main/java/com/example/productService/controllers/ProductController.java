@@ -79,13 +79,18 @@ public class ProductController {
             ProductRequestDto pDto = new ProductRequestDto();
             pDto.setName(product.getTitle());
             pDto.setPrice(product.getPrice());
-            ResponseEntity<ProductRequestDto> notificationResponse = notificationServiceClient.getProduct(pDto);
-
-             //return product 
-             MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-             headers.add("Accept", "application/json");
-             headers.add("auth-token", "heyaccess");
-             headers.add("notification-service-response", notificationResponse.getBody().toString());
+            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+            try {
+                ResponseEntity<ProductRequestDto> notificationResponse = notificationServiceClient.getProduct(pDto);
+                headers.add("Accept", "application/json");
+                headers.add("auth-token", "heyaccess");
+                headers.add("notification-service-response", notificationResponse.getBody().toString());
+             
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+            
+            
              ResponseEntity<Product> responseEntity = new ResponseEntity<>(product, headers, HttpStatus.OK);
 
             return responseEntity;
@@ -133,29 +138,30 @@ public class ProductController {
     @GetMapping("")
     public ResponseEntity<ProductDto[]> getAllProducts(){
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        //headers.add("Accept", "application/json");
-        //headers.add("auth-token", "heyaccess");
-        List<Product> allPRoduct = productService.getAllProducts();
-        ProductDto[] listOfProductDtos = new ProductDto[allPRoduct.size()];
-        int i =0;
-        for(Product product: allPRoduct){
-            ProductDto productDto = ProductToDto(product);
-            listOfProductDtos[i] = productDto;
-            i++;
-        }
+        headers.add("Accept", "application/json");
+        headers.add("auth-token", "heyaccess");
+        //List<Product> allPRoduct = productService.getAllProducts();
+        ResponseEntity<ProductDto[]> listOfProdDtoEntity = productService.getAllProducts();
+        // ProductDto[] listOfProductDtos = new ProductDto[allPRoduct.size()];
+        // int i =0;
+        // for(Product product: allPRoduct){
+        //     ProductDto productDto = ProductToDto(product);
+        //     listOfProductDtos[i] = productDto;
+        //     i++;
+        // }
         
-        // calling the order service 
-        ProductRequestDto pDto = new ProductRequestDto();
-            pDto.setName("all product");
-            pDto.setPrice(100.00);
-        ResponseEntity<ProductRequestDto> notificationResponse = notificationServiceClient.getProduct(pDto);
+        // // calling the order service 
+        // ProductRequestDto pDto = new ProductRequestDto();
+        //     pDto.setName("all product");
+        //     pDto.setPrice(100.00);
+        // ResponseEntity<ProductRequestDto> notificationResponse = notificationServiceClient.getProduct(pDto);
 
-        MultiValueMap<String, String> headers2 = new LinkedMultiValueMap<>();
-        headers2.add("Accept", "application/json");
-        headers2.add("auth-token", "heyaccess");
-        headers2.add("notification-service-response", notificationResponse.getHeaders().toString());
+        // MultiValueMap<String, String> headers2 = new LinkedMultiValueMap<>();
+        // headers2.add("Accept", "application/json");
+        // headers2.add("auth-token", "heyaccess");
+        // headers2.add("notification-service-response", notificationResponse.getHeaders().toString());
         
-        ResponseEntity<ProductDto[]> response = new ResponseEntity<ProductDto[]>(listOfProductDtos, headers2, HttpStatus.OK);
+        ResponseEntity<ProductDto[]> response = new ResponseEntity<ProductDto[]>(listOfProdDtoEntity.getBody(), headers, HttpStatus.OK);
         return response;
     }
 
@@ -166,13 +172,13 @@ public class ProductController {
     }
 
 
-    @PostMapping
-    public ResponseEntity<Product> addNewProduct(@RequestBody ProductDto productDto){
-        Product tmpProd = DtoToProduct(productDto);
-        Product product = productService.addNewProduct(tmpProd);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+    // @PostMapping
+    // public ResponseEntity<Product> addNewProduct(@RequestBody ProductDto productDto){
+    //     Product tmpProd = DtoToProduct(productDto);
+    //     Product product = productService.addNewProduct(tmpProd);
+    //     return new ResponseEntity<>(product, HttpStatus.OK);
 
-    }
+    // }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteSingleProduct(@PathVariable("id") Long productId){
