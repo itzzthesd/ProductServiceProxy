@@ -48,10 +48,14 @@ public class FakeStoreProductService implements IProductService{ //
             ResponseEntity<ProductDto> productDto = restTemplate /// jackson is doing the mapping of response to ProductDto
                             .getForEntity("https://fakestoreapi.com/products/{productId}", ProductDto.class, productId);
 
+            // put into the redis server
+            redisTemplate.opsForHash().put("PRODUCTS", productId, productDto.getBody());
+
             // we can convert product DTO to product and return product to controller as well 
             Product product = getProduct(productDto.getBody());
             Optional<Product> opProd = Optional.of(product);
-            redisTemplate.opsForHash().put("PRODUCTS", productId, cachedDto);
+
+            
             return opProd;
        }else{
             Optional<Product> opProd = Optional.of(getProduct(cachedDto));

@@ -13,6 +13,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ProductDto implements Serializable { /// always expose our product Dto to clients, never expose 3rd party DTo to clients
+    // serializable is due to redis implementation
     private Long id;
     private String title;
     private double price;
