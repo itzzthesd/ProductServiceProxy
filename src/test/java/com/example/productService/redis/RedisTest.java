@@ -1,28 +1,33 @@
 package com.example.productService.redis;
 
+
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
 
-import jakarta.annotation.PostConstruct;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@Component
 @SpringBootTest
 public class RedisTest {
 
-    private final RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
-    public RedisTest(RedisTemplate<String, String> redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
-
-    @PostConstruct
     @Test
     public void testRedisConnection() {
-        redisTemplate.opsForValue().set("testKey", "testValue");
-        String value = redisTemplate.opsForValue().get("testKey");
-        System.out.println("Redis connection test: " + value);
+        // Arrange
+        String testKey = "testKey";
+        String testValue = "testValue";
+
+        // Act
+        redisTemplate.opsForValue().set(testKey, testValue);
+        String retrievedValue = redisTemplate.opsForValue().get(testKey);
+
+        // Assert
+        assertThat(retrievedValue).isNotNull();
+        assertThat(retrievedValue).isEqualTo(testValue);
+
+        System.out.println("Redis connection test passed. Retrieved value: " + retrievedValue);
     }
 }
-

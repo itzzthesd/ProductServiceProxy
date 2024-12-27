@@ -50,13 +50,13 @@ public class ProductController {
 
     private TokenValidator tokenValidator;
 
-    private final OrderServiceClient notificationServiceClient;
+    private final OrderServiceClient orderServiceClient;
 
     public ProductController(IProductService productService, TokenValidator tokenValidator, 
-                            OrderServiceClient notificationServiceClient){
+                            OrderServiceClient orderServiceClient){
         this.productService = productService;
         this.tokenValidator = tokenValidator;
-        this.notificationServiceClient = notificationServiceClient;
+        this.orderServiceClient = orderServiceClient;
     }
 
    
@@ -81,10 +81,10 @@ public class ProductController {
             pDto.setPrice(product.getPrice());
             MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
             try {
-                ResponseEntity<ProductRequestDto> notificationResponse = notificationServiceClient.getProduct(pDto);
+                ResponseEntity<ProductRequestDto> orderServiceResponse = orderServiceClient.getProduct(pDto);
                 headers.add("Accept", "application/json");
                 headers.add("auth-token", "heyaccess");
-                headers.add("notification-service-response", notificationResponse.getBody().toString());
+                headers.add("notification-service-response", orderServiceResponse.getBody().toString());
              
             } catch (Exception e) {
                 // TODO: handle exception
@@ -154,7 +154,7 @@ public class ProductController {
         // ProductRequestDto pDto = new ProductRequestDto();
         //     pDto.setName("all product");
         //     pDto.setPrice(100.00);
-        // ResponseEntity<ProductRequestDto> notificationResponse = notificationServiceClient.getProduct(pDto);
+        // ResponseEntity<ProductRequestDto> notificationResponse = orderServiceClient.getProduct(pDto);
 
         // MultiValueMap<String, String> headers2 = new LinkedMultiValueMap<>();
         // headers2.add("Accept", "application/json");
